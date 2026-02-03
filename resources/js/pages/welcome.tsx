@@ -1,10 +1,11 @@
 import hero from '@/assets/hero.png';
-import Navbar from '@/pages/navbar';
+import Navbar from'@/layouts/nav-layout';
 import Footer from './footer';
+import { ArrowRight } from 'lucide-react';
 export default function Welcome(){
     return (
         <>
-        <Navbar />
+        <Navbar>
             <section>
                <div className="relative isolate px-5 pt-20 lg:px-10">
                 <div className="mx-auto max-w-7xl py-24">
@@ -18,8 +19,10 @@ export default function Welcome(){
                         Website ini merupakan tempat belajar pemrograman dengan berbagai fitur seperti test, lembar kerja siswa dan sekaligus nilainya 
                         </p>
                         <div className=" animate-bounce justify-center mt-10 flex items-center gap-x-6 ">
-                            <button className="px-4 py-1.5 rounded-md bg-[#78B9B5] font-medium text-white hover:bg-gray-300 hover:text-black">
-                                Jelajahi
+                            <button className="w-32 px-4 py-1.5 rounded-md bg-[#78B9B5] font-medium text-white 
+                            hover:bg-gray-300 hover:text-black flex items-center justify-between">
+                                <span>Jelajahi</span>
+                                <ArrowRight size={20} />
                             </button>
                         </div>
                     </div>
@@ -33,7 +36,8 @@ export default function Welcome(){
                 </div>
                 </div>
             </section>
-             <Footer />
+        </Navbar>
+        <Footer />
         </>
     );
 }

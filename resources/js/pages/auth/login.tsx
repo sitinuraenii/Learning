@@ -1,122 +1,131 @@
+import { Form, Head, usePage } from '@inertiajs/react';
+import { CheckCircle } from 'lucide-react';
+
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+
 import AuthLayoutLogin from '@/layouts/auth-layout-login';
-import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
-import { Form, Head } from '@inertiajs/react';
+
 import '../../css/login.css';
 
 interface LoginProps {
-    status?: string;
-    canResetPassword: boolean;
-    canRegister: boolean;
+  status?: string;
+  canResetPassword: boolean;
+  canRegister: boolean;
+}
+
+interface FlashProps {
+  success?: string;
+  error?: string;
 }
 
 export default function Login({
-    status,
-    canResetPassword,
-    canRegister,
-}: LoginProps) {
-    return (
-        <AuthLayoutLogin
-            title="MASUK"
-            description="Login dengan benar ya!!!"
-        >
-            <Head title="Masuk" />
+  status,
+  canResetPassword,
+}: Readonly<LoginProps>) {
+  const { flash } = usePage().props as Readonly<{
+    flash?: FlashProps;
+  }>;
 
-            <Form
-                {...store.form()}
-                resetOnSuccess={['password']}
-                className="flex flex-col gap-6"
-            >
-                {({ processing, errors }) => (
-                    <>
-                        <div className="grid gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    required
-                                    autoFocus
-                                    tabIndex={1}
-                                    autoComplete="email"
-                                    placeholder="email@example.com"
-                                />
-                                <InputError message={errors.email} />
-                            </div>
+  return (
+    <AuthLayoutLogin
+      title="MASUK"
+      description="Login dengan benar ya!!!"
+    >
+      <Head title="Masuk" />
 
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Kata Sandi</Label>
-                                    {canResetPassword && (
-                                        <TextLink
-                                            href={request()}
-                                            className="ml-auto text-sm"
-                                            tabIndex={5}
-                                        >
-                                            Lupa Kata Sandi?
-                                        </TextLink>
-                                    )}
-                                </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    required
-                                    tabIndex={2}
-                                    autoComplete="current-password"
-                                    placeholder="Password"
-                                />
-                                <InputError message={errors.password} />
-                            </div>
+      {flash?.success && (
+        <Alert className="mb-6">
+          <CheckCircle />
+          <AlertTitle>Berhasil</AlertTitle>
+          <AlertDescription>
+            {flash.success}
+          </AlertDescription>
+        </Alert>
+      )}
 
-                            {/* <div className="flex items-center space-x-3">
-                                <Checkbox
-                                    id="remember"
-                                    name="remember"
-                                    tabIndex={3}
-                                />
-                                <Label htmlFor="remember">Remember me</Label>
-                            </div> */}
-                            <div className="button-container">
-                            <Button
-                                type="submit"
-                                className="btnlogin"
-                                tabIndex={4}
-                                disabled={processing}
-                                data-test="login-button"
-                            >
-                                {processing && <Spinner />}
-                                Masuk
-                            </Button>
-                            </div>
-                        </div>
+      <Form
+        {...store.form()}
+        resetOnSuccess={['password']}
+        className="flex flex-col gap-6"
+      >
+        {({ processing, errors }) => (
+          <div className="grid gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                required
+                autoFocus
+                autoComplete="email"
+                placeholder="email@example.com"
+              />
+              <InputError message={errors.email} />
+            </div>
 
-                        {/* {canRegister && (
-                            <div className="text-center text-sm text-muted-foreground">
-                                Jika belum mempunyai akun silahkan daftar dulu yaa!!!{' '}
-                                <TextLink href={register()} tabIndex={5}>
-                                    Sign up
-                                </TextLink>
-                            </div>
-                        )} */}
-                    </>
+            <div className="grid gap-2">
+              {/* <div className="flex items-center">
+                <Label htmlFor="password">Kata Sandi</Label>
+
+                {canResetPassword && (
+                  <TextLink
+                    href={request()}
+                    className="ml-auto text-sm"
+                  >
+                    Lupa Kata Sandi?
+                  </TextLink>
                 )}
-            </Form>
+              </div> */}
 
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
-        </AuthLayoutLogin>
-    );
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                required
+                autoComplete="current-password"
+                placeholder="Password"
+                className="
+                  bg-white
+                  text-gray-900
+                  placeholder-gray-400
+                "
+              />
+              <InputError message={errors.password} />
+            </div>
+
+            <div className="button-container">
+              <Button
+                type="submit"
+                className="btnlogin"
+                disabled={processing}
+                data-test="login-button"
+              >
+                {processing && <Spinner />}
+                Masuk
+              </Button>
+            </div>
+          </div>
+        )}
+      </Form>
+
+      {status && (
+        <div className="mt-4 text-center text-sm font-medium text-green-600">
+          {status}
+        </div>
+      )}
+    </AuthLayoutLogin>
+  );
 }

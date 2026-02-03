@@ -21,41 +21,46 @@ import grade from '@/assets/grade.png';
 import guide from '@/assets/guide.png';
 import feedback from '@/assets/feedback2.png';
 import signout from '@/assets/signout.png';
-import { usePage } from '@inertiajs/react';
+import { Pencil } from 'lucide-react';
+import { Link, usePage } from "@inertiajs/react";
 
 export function AppSidebar() {
 
-const {auth} =usePage().props;
-const useRole =auth?.user?.role || 'user';
+type AuthUser = {
+  id: number;
+  name: string;
+  email: string;
+  role?: string;
+};
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Home',
-        href: dashboard(),
-        icon: <img src={home} className="w-5 h-5 " />, 
-    },
-    {
-        title: 'Profil',
-        href: dashboard(),
-        icon: <img src={profil} className="w-6 h-6" />,
-    },
-    
-];
+type PageProps = {
+  auth?: {
+    user?: AuthUser;
+  };
+};
 
-const userNavItems: NavItem[] = [
-        { title: 'Test', href: dashboard(), icon: <img src={test} className="w-6 h-6" /> },
-        { title: 'Course', href: dashboard(), icon: <img src={course} className="w-5 h-5" /> },
-        { title: 'Grade', href: dashboard(), icon: <img src={grade} className="w-6 h-6" /> },
-        { title: 'Guidebook', href: dashboard(), icon: <img src={guide} className="w-5 h-5" /> },
-        { title: 'Feedback', href: dashboard(), icon: <img src={feedback} className="w-5 h-5" /> },
+const { auth } = usePage<PageProps>().props;
+const userRole = auth?.user?.role ?? 'siswa';
+
+const siswaNavItems: NavItem[] = [
+  { title: 'Home', href: '/home', icon: <img src={home} className="w-5 h-5" /> },
+  { title: 'Profil', href: '/siswa/profil', icon: <img src={profil} className="w-6 h-6" /> },
+  { title: 'Test', href: '/siswa/test', icon: <img src={test} className="w-6 h-6" /> },
+  { title: 'Course', href: '/siswa/course', icon: <img src={course} className="w-5 h-5" /> },
+  { title: 'Grade', href: '/siswa/grade', icon: <img src={grade} className="w-6 h-6" /> },
+  { title: 'Guidebook', href: '/guide', icon: <img src={guide} className="w-5 h-5" /> },
+  { title: 'Feedback', href: '/siswa/feedback', icon: <img src={feedback} className="w-5 h-5" /> },
 ];
 
 const guruNavItems: NavItem[] = [
-        { title: 'Data user', href: '/guru/dataUser', icon: <img src={profil} className="w-6 h-6" /> },
-        { title: 'Kelola Test', href: '/guru/test/kelolaTest', icon: <img src={test} className="w-6 h-6" /> },
-        { title: 'Kelola Course', href: '/guru/course', icon: <img src={course} className="w-5 h-5" /> },
-        { title: 'Kelola Nilai', href: '/guru/grade', icon: <img src={grade} className="w-6 h-6" /> },
+  { title: 'Home', href: '/home', icon: <img src={home} className="w-5 h-5" /> },
+  { title: 'Profil', href: '/guru/edit-profil', icon: <img src={profil} className="w-6 h-6" /> },
+  { title: 'Data User', href: '/guru/list-siswa', icon: <img src={profil} className="w-6 h-6" /> },
+  { title: 'Kelola Test', href: '/guru/test/kelolaTest', icon: <img src={test} className="w-6 h-6" /> },
+  { title: 'Kelola Course', href: '/guru/course', icon: <img src={course} className="w-5 h-5" /> },
+  { title: 'Kelola Nilai', href: '/guru/grade', icon: <img src={grade} className="w-6 h-6" /> },
 ];
+
 
 const footerNavItems: NavItem[] = [
     {
@@ -66,27 +71,43 @@ const footerNavItems: NavItem[] = [
     
 ];
 
-    let roleBasedNavItems = [...mainNavItems];
-    if (useRole === 'user'){
-        roleBasedNavItems = [...roleBasedNavItems, ...userNavItems, ...footerNavItems];
-    }
-    if (useRole === 'guru'){
-        roleBasedNavItems = [...roleBasedNavItems, ...guruNavItems, ...footerNavItems];
-    }
+const roleBasedNavItems = [
+        ...(userRole === 'guru' ? guruNavItems : siswaNavItems),
+        ...footerNavItems,
+    ];
 
 
     return (
         <Sidebar collapsible="icon" variant="inset" className="bg-[#0F828C]">
             <SidebarHeader className="bg-[#0F828C] " >
-                <SidebarMenu >
-                    <SidebarMenuItem >
-                        {/* <SidebarMenuButton  asChild > */}
-                            {/* <Link href={dashboard()} > */}
-                                <AppLogo />
-                            {/* </Link> */}
-                        {/* </SidebarMenuButton> */}
-                    </SidebarMenuItem>
-                </SidebarMenu>
+              <SidebarMenu >
+                  <SidebarMenuItem >
+                      {/* <SidebarMenuButton  asChild > */}
+                          {/* <Link href={dashboard()} > */}
+                              <AppLogo />
+                          {/* </Link> */}
+                      {/* </SidebarMenuButton> */}
+                  </SidebarMenuItem>
+              </SidebarMenu>
+              
+              <div className="mt-4 px-3 py-3 rounded-lg bg-white/10">
+                <div className="flex items-center gap-3">
+                  
+                  <div className="w-10 h-10 shrink-0 rounded-full bg-white flex items-center justify-center font-semibold text-[#0F828C]">
+                    {auth?.user?.name?.charAt(0).toUpperCase()}
+                  </div>
+                 
+                  <div className="flex-1 min-w-0 text-white">
+                    <p className="text-sm font-semibold truncate">
+                      {auth?.user?.name}
+                    </p>
+                    <p className="text-xs text-white/80 truncate">
+                      {auth?.user?.email}
+                    </p>
+                  </div>
+                 
+                </div>
+              </div>
             </SidebarHeader>
 
             <SidebarContent className="bg-[#0F828C]">

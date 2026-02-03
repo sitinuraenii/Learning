@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import registrasi from '@/assets/registrasi.png';
 import { register } from '@/routes';
-import TextLink from "@/components/text-link";
+import { Link } from '@inertiajs/react';
 import { Button } from "@/components/ui/button";
 import '../../css/login.css';
 
@@ -46,12 +46,14 @@ export default function AuthLoginLayout({
                     {canRegister && (
                         <>
                             <div className="pb-5 text-center text-sm text-muted-foreground">
-                                Jika belum mempunyai akun silahkan daftar dulu yaa!!!
+                              Jika belum mempunyai akun silahkan daftar dulu yaa!!!
                             </div>
 
-                            <TextLink href={register()}>
-                                <Button className="btnregister">DAFTAR</Button>
-                            </TextLink>
+                          <Button asChild className="btnregister">
+                            <Link href="/register">
+                              DAFTAR
+                            </Link>
+                          </Button>
                         </>
                     )}
                 </div>
