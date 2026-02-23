@@ -1,6 +1,7 @@
 import { router, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { Trash2 } from 'lucide-react';
 
 interface User {
   id: number;
@@ -22,11 +23,15 @@ interface Pagination {
   links: PaginationLink[];
 }
 
-export default function DataUser() {
-  const { users, filters } = usePage().props as {
-    users: Pagination;
-    filters: { search?: string };
+interface DataUserProps extends Record<string, any> {
+  users: Pagination;
+  filters: {
+    search?: string;
   };
+}
+
+export default function DataUser() {
+  const { users, filters } = usePage<DataUserProps>().props;
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     router.get(
@@ -115,13 +120,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </td>
 
                     <td className="px-4 py-3 text-center space-x-2">
-                      <button className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg">
-                        Ubah
-                      </button>
-                      <button className="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded-lg">
-                        Hapus
-                      </button>
-                    </td>
+                    
+                    <button className="inline-flex items-center gap-1.5 bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded-lg transition">
+                      <Trash2 size={14} />
+                      Hapus
+                    </button>
+                  </td>
                   </tr>
                 ))}
 

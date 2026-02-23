@@ -51,4 +51,15 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
+    public function courseProgress()
+    {
+        return $this->hasMany(CourseProgress::class, 'user_id');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(StudentAnswer::class, 'user_id'); 
+    }
+    
 }

@@ -10,7 +10,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-import { dashboard, logout } from '@/routes';
+import {  logout } from '@/routes';
 import { type NavItem } from '@/types';
 import AppLogo from './app-logo';
 import home from '@/assets/home.png';
@@ -40,25 +40,26 @@ type PageProps = {
 };
 
 const { auth } = usePage<PageProps>().props;
-const userRole = auth?.user?.role ?? 'siswa';
+
+const userRole = auth?.user?.role;
 
 const siswaNavItems: NavItem[] = [
-  { title: 'Home', href: '/home', icon: <img src={home} className="w-5 h-5" /> },
-  { title: 'Profil', href: '/siswa/profil', icon: <img src={profil} className="w-6 h-6" /> },
-  { title: 'Test', href: '/siswa/test', icon: <img src={test} className="w-6 h-6" /> },
-  { title: 'Course', href: '/siswa/course', icon: <img src={course} className="w-5 h-5" /> },
-  { title: 'Grade', href: '/siswa/grade', icon: <img src={grade} className="w-6 h-6" /> },
-  { title: 'Guidebook', href: '/guide', icon: <img src={guide} className="w-5 h-5" /> },
+  { title: 'Home', href: '/siswa/dashboard', icon: <img src={home} className="w-5 h-5" /> },
+  { title: 'Profil', href: '/edit-profil', icon: <img src={profil} className="w-6 h-6" /> },
+  // { title: 'Guidebook', href: '/guide', icon: <img src={guide} className="w-5 h-5" /> },
+  { title: 'Test', href: '/siswa/testSiswa/listTest', icon: <img src={test} className="w-6 h-6" /> },
+  { title: 'Course', href: '/siswa/courseSiswa/listCourse', icon: <img src={course} className="w-5 h-5" /> },
+  { title: 'Grade', href: '/siswa/nilaiSiswa/hasilBelajar', icon: <img src={grade} className="w-6 h-6" /> },
   { title: 'Feedback', href: '/siswa/feedback', icon: <img src={feedback} className="w-5 h-5" /> },
 ];
 
 const guruNavItems: NavItem[] = [
-  { title: 'Home', href: '/home', icon: <img src={home} className="w-5 h-5" /> },
-  { title: 'Profil', href: '/guru/edit-profil', icon: <img src={profil} className="w-6 h-6" /> },
-  { title: 'Data User', href: '/guru/list-siswa', icon: <img src={profil} className="w-6 h-6" /> },
-  { title: 'Kelola Test', href: '/guru/test/kelolaTest', icon: <img src={test} className="w-6 h-6" /> },
-  { title: 'Kelola Course', href: '/guru/course', icon: <img src={course} className="w-5 h-5" /> },
-  { title: 'Kelola Nilai', href: '/guru/grade', icon: <img src={grade} className="w-6 h-6" /> },
+  { title: 'Home', href: '/guru/dashboard', icon: <img src={home} className="w-5 h-5" /> },
+  { title: 'Profil', href: '/edit-profil', icon: <img src={profil} className="w-6 h-6" /> },
+  { title: 'Data Siswa', href: '/guru/list-siswa', icon: <img src={profil} className="w-6 h-6" /> },
+  { title: 'Kelola Test', href: '/guru/test', icon: <img src={test} className="w-6 h-6" /> },
+  { title: 'Kelola Course', href: '/guru/course/list-materi', icon: <img src={course} className="w-5 h-5" /> },
+  { title: 'Kelola Nilai', href: '/guru/nilai/daftarNilai', icon: <img src={grade} className="w-6 h-6" /> },
 ];
 
 

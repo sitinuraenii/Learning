@@ -11,26 +11,25 @@ class GuruProfilController extends Controller
 
     public function edit(Request $request)
     {
-        return Inertia::render('guru/edit-profil', [
+        return Inertia::render('edit-profil', [
             'user' => $request->user(),
         ]);
     }
 
     public function update(Request $request)
-{
-    $request->validate([
-        'name'  => 'required|string|max:255',
-        'jk'    => 'required|in:L,P',
-        'email' => 'required|email',
-    ]);
+    {
+        $user = $request->user();
 
-    $request->user()->update([
-        'name'  => $request->name,
-        'jk'    => $request->jk,
-        'email' => $request->email,
-    ]);
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'jk'    => 'required|in:L,P',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
 
-        return redirect()->route('dashboard')
-            ->with('success', 'Profil berhasil diperbarui');
+        $user->update($request->only('name', 'jk', 'email'));
+
+        // Redirect dinamis: Jika role 'guru' ke /guru/dashboard, jika 'siswa' ke /siswa/dashboard
+        return redirect()->to('/' . $user->role . '/dashboard')
+                        ->with('success', 'Profil berhasil diperbarui');
     }
 }
